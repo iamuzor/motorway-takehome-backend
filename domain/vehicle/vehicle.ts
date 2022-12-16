@@ -2,7 +2,7 @@ export type VehicleId = string;
 export enum VehicleStates {
   QUOTED = 'quoted',
   SELLING = 'selling',
-  TIMESTAMP = 'selling',
+  SOLD = 'sold',
 }
 type VehicleMake = string;
 type VehicleModel = string;
