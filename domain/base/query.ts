@@ -1,8 +1,8 @@
-import { QueryResponse } from "./query-response";
-import { Logger as ILogger } from "./logger";
+import { QueryResponse } from './query-response';
+import { Logger as ILogger } from './logger';
 
 export interface Query {
   readonly logger: ILogger;
 
-  execute(): Promise<any>;
+  execute(...args: any[]): Promise<any>;
 }
