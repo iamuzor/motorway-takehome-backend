@@ -1,3 +1,3 @@
-export interface QueryResponse<T> {
-  toJSON(): T;
+export class QueryResponse {
+  constructor(readonly data: any) {}
 }
