@@ -1,19 +1,54 @@
-import { Controller, Get, Inject, Req } from '@nestjs/common';
+import {
+  BadRequestException,
+  CacheInterceptor,
+  CACHE_MANAGER,
+  Controller,
+  Get,
+  Inject,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { Request } from 'express';
-import { RetrieveVehicleStateByTimestamp } from '../../domain/vehicle/retrieve-vehicle-state-by-timestamp';
+import { RetrieveVehicleByTimestamp } from '../../domain/vehicle/retrieve-vehicle-by-timestamp';
 
 @Controller()
 export class VehicleController {
   constructor(
-    @Inject('RetrieveVehicleStateByTimestamp')
-    readonly retrieveVehicleStateByTimestamp: RetrieveVehicleStateByTimestamp,
+    @Inject('RetrieveVehicleByTimestamp')
+    private readonly retrieveVehicleStateByTimestamp: RetrieveVehicleByTimestamp,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
+  /**
+   * This endpoint returns vehicle data at a given time. Response is temporarily cached.
+   * @param req
+   * @returns
+   */
   @Get(':id/timestamp/:timestamp')
+  @UseInterceptors(CacheInterceptor)
   async findByTimestamp(@Req() req: Request): Promise<any> {
-    return this.retrieveVehicleStateByTimestamp.execute({
+    const cacheKey = req.path;
+    const cacheTTL = Number(process.env.CACHED_VEHICLE_DATA_TTL);
+    const cachedResponse = await this.cacheManager.get(cacheKey);
+
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    const timestamp = new Date(req.params.timestamp);
+
+    if (!timestamp?.getTime()) {
+      throw new BadRequestException('INVALID_TIMESTAMP');
+    }
+
+    const response = await this.retrieveVehicleStateByTimestamp.execute({
       id: req.params.id,
       timestamp: new Date(req.params.timestamp),
     });
+
+    this.cacheManager.set(cacheKey, response, cacheTTL);
+
+    return response;
   }
 }

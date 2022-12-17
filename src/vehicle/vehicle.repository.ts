@@ -1,8 +1,4 @@
-import {
-  Vehicle,
-  VehicleId,
-  VehicleStates,
-} from '../../domain/vehicle/vehicle';
+import { Vehicle, VehicleId } from '../../domain/vehicle/vehicle';
 import { VehicleRepository as IVehicleRepository } from '../../domain/vehicle/repositories/vehicle-repository';
 import { Injectable } from '@nestjs/common';
 import { Knex } from 'knex';

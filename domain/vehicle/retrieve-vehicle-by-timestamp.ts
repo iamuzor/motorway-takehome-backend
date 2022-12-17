@@ -1,10 +1,10 @@
-import { QueryResponse } from 'domain/base/query-response';
+import { Response } from '../base/response';
 import { Logger } from '../base/logger';
 import { Query } from '../base/query';
 import { VehicleRepository } from './repositories/vehicle-repository';
-import { VehicleId } from './vehicle';
+import { Vehicle, VehicleId } from './vehicle';
 
-export class RetrieveVehicleStateByTimestamp implements Query {
+export class RetrieveVehicleByTimestamp implements Query {
   constructor(
     readonly vehicleRepo: VehicleRepository,
     readonly logger: Logger,
@@ -13,14 +13,14 @@ export class RetrieveVehicleStateByTimestamp implements Query {
   async execute(params: {
     id: VehicleId;
     timestamp: Date;
-  }): Promise<QueryResponse> {
+  }): Promise<Response<Vehicle>> {
     this.logger.info(
       `Retrieving info for vehicle (${
         params.id
       }) at timestamp (${params.timestamp.toISOString()})`,
     );
 
-    return new QueryResponse(
+    return new Response(
       await this.vehicleRepo.findVehicleByTimestamp(
         params.id,
         params.timestamp,

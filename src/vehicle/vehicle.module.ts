@@ -1,30 +1,25 @@
-import { Module } from '@nestjs/common';
-import { VehicleRepository } from './vehicle.repository';
+import { CacheModule, Module } from '@nestjs/common';
+import { getDatabaseClient, getLogger } from '../common';
+import { RetrieveVehicleByTimestamp } from '../../domain/vehicle/retrieve-vehicle-by-timestamp';
 import { VehicleController } from './vehicle.controller';
-import { RetrieveVehicleStateByTimestamp } from '../../domain/vehicle/retrieve-vehicle-state-by-timestamp';
-import knex from 'knex';
+import { VehicleRepository } from './vehicle.repository';
 
 @Module({
-  imports: [],
+  imports: [
+    CacheModule.register({
+      isGlobal: true,
+    }),
+  ],
   controllers: [VehicleController],
   providers: [
     {
-      provide: 'RetrieveVehicleStateByTimestamp',
-      useValue: new RetrieveVehicleStateByTimestamp(
-        VehicleRepository.getInstance(
-          knex({
-            client: 'pg',
-            connection: {
-              host: 'localhost',
-              port: 5432,
-              user: 'user',
-              password: 'password',
-              database: 'motorway',
-            },
-          }),
-        ),
-        console,
-      ),
+      provide: 'RetrieveVehicleByTimestamp',
+      useFactory: async () => {
+        return new RetrieveVehicleByTimestamp(
+          VehicleRepository.getInstance(await getDatabaseClient()),
+          getLogger(),
+        );
+      },
     },
   ],
 })
