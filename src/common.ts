@@ -20,7 +20,9 @@ export const getDatabaseClient = async (): Promise<Knex> => {
 
     return instance;
   } catch (e) {
-    throw new Error(JSON.stringify(e));
+    throw new Error(
+      'Unable to connect to postgres database:' + JSON.stringify(e),
+    );
   }
 };
 

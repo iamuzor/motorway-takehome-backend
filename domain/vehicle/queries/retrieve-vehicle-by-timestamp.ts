@@ -1,8 +1,8 @@
-import { Response } from '../base/response';
-import { Logger } from '../base/logger';
-import { Query } from '../base/query';
-import { VehicleRepository } from './repositories/vehicle-repository';
-import { Vehicle, VehicleId } from './vehicle';
+import { Vehicle, VehicleId } from '../vehicle';
+import { VehicleRepository } from '../repositories/vehicle-repository';
+import { Query } from '../../base/query';
+import { Logger } from '../../base/logger';
+import { Response } from '../../base/response';
 
 export class RetrieveVehicleByTimestamp implements Query {
   constructor(

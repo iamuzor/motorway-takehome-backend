@@ -1,22 +1,19 @@
 export type VehicleId = string;
-export enum VehicleStates {
-  QUOTED = 'quoted',
-  SELLING = 'selling',
-  SOLD = 'sold',
-}
+type VehicleState = string;
 type VehicleMake = string;
 type VehicleModel = string;
+
 export type VehicleJSON = {
   id: VehicleId;
   make: VehicleId;
   model: VehicleModel;
-  state: VehicleStates;
+  state: VehicleState;
 };
 
 export class Vehicle {
   private constructor(
     readonly id: VehicleId,
-    readonly state: VehicleStates,
+    readonly state: VehicleState,
     readonly make: VehicleMake,
     readonly model: VehicleModel,
   ) {}

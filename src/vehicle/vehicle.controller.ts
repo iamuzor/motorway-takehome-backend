@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Request } from 'express';
-import { RetrieveVehicleByTimestamp } from '../../domain/vehicle/retrieve-vehicle-by-timestamp';
+import { RetrieveVehicleByTimestamp } from '../../domain/vehicle/queries/retrieve-vehicle-by-timestamp';
 
 @Controller()
 export class VehicleController {
@@ -47,7 +47,7 @@ export class VehicleController {
       timestamp: new Date(req.params.timestamp),
     });
 
-    this.cacheManager.set(cacheKey, response, cacheTTL);
+    await this.cacheManager.set(cacheKey, response, cacheTTL);
 
     return response;
   }

@@ -1,8 +1,8 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { getDatabaseClient, getLogger } from '../common';
-import { RetrieveVehicleByTimestamp } from '../../domain/vehicle/retrieve-vehicle-by-timestamp';
 import { VehicleController } from './vehicle.controller';
 import { VehicleRepository } from './vehicle.repository';
+import { RetrieveVehicleByTimestamp } from '../../domain/vehicle/queries/retrieve-vehicle-by-timestamp';
 
 @Module({
   imports: [

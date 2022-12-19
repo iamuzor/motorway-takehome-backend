@@ -1,5 +1,5 @@
 import { RetrieveVehicleByTimestamp } from './retrieve-vehicle-by-timestamp';
-import { Vehicle, VehicleStates } from './vehicle';
+import { Vehicle } from '../vehicle';
 
 describe('RetrieveVehicleStateByTimestamp', () => {
   const vehicleRepoMock = {
@@ -13,13 +13,13 @@ describe('RetrieveVehicleStateByTimestamp', () => {
         id: '1',
         make: 'test-make',
         model: 'test-model',
-        state: VehicleStates.QUOTED,
+        state: 'test-state',
       }),
     );
 
     const response = await query.execute({ id: '1', timestamp: new Date() });
 
     expect(response.data).toBeInstanceOf(Vehicle);
-    expect(response.data.state).toEqual(VehicleStates.QUOTED);
+    expect(response.data.state).toEqual('test-state');
   });
 });
