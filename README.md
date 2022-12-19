@@ -1,25 +1,41 @@
-### Run application
+## What was covered, and not covered
+- Vehicle API endpoint. ✅
+- Unit tests. ✅
+- E2E tests. ✅
+- API documentation. ❌
 
+## Run application
+**Build docker image**
 ```shell
-$ make build
-$ make start
+$ docker build -t motorway-api . -f Dockerfile.api
+```
+
+**Start application**
+```shell
+$ docker compose up -d
 ```
 
 **Stop application**
 ```shell
-$ make stop
+$ docker compose down
 ```
 
-**Run tests**
+## Run tests
+
+_Node 16 required on local machine. ⚠️_
+
+
+**Build**
 ```shell
-$ make test_all
+$ docker run -v $(pwd):/usr/src/app -w /usr/src/app node:16-alpine npm install
+```
+**Unit test**
+```shell
+$ npm run test
+````
+
+**E2E tests**
+```shell
+$ npm run test:e2e
 ```
 
-### What was covered
-- Vehicle API endpoint. ✅
-- Unit tests. ✅
-- API tests. ✅
-
-### What was not covered:
-
-- No API documentation was included. ❌
